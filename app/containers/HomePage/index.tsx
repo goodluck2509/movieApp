@@ -1,13 +1,13 @@
+import { Card } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import MobileStepper from "@material-ui/core/MobileStepper";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-// import { Link } from "react-router-dom";
+import { Link } from "remix";
 // import "slick-carousel/slick/slick-theme.css";
 // import "slick-carousel/slick/slick.css";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
@@ -117,15 +117,28 @@ const useStyles = makeStyles((theme) => ({
   titleType: {
     color: "#00acc1",
   },
-  cardList: {
-    width: "100%",
-    display: "flex",
-  },
   cardItem: {
     flex: 1,
-    position: "relative",
-    padding: "5px",
     background: "black",
+    borderRadius: "5px",
+    //
+    overflow: "unset",
+    wordBreak: "break-word",
+    boxShadow: "none",
+    cursor: "pointer",
+    position: "relative",
+    transition: "all 0.2s ease-in-out",
+    "-o-transition": "all 0.2s ease-in-out",
+    "-moz-transition": "all 0.2s ease-in-out",
+    "-webkit-transition": "all 0.2s ease-in-out",
+    "&:hover": {
+      boxShadow: "0px 3px 20px 0px rgba(44, 101, 144, 0.3)",
+      "-webkit-transform": "translateY(-4px)",
+      "-moz-transform": "translateY(-4px)",
+      "-o-transform": "translateY(-4px)",
+      "-ms-transform": "translateY(-4px)",
+      transform: "translateY(-4px)",
+    },
   },
   hd: {
     position: "absolute",
@@ -257,9 +270,9 @@ export default function HomePage() {
                 {listMovie &&
                   listMovie.map((value: any, index2: any) => (
                     <Grid item xs={2} key={(() => `${index2}`)()}>
-                      <Box
+                      <Link
                         // to={`/${value.id}`}
-                        className={classes.cardList}
+                        to="/detailPage"
                       >
                         <Card className={classes.cardItem}>
                           <CardMedia
@@ -280,7 +293,7 @@ export default function HomePage() {
                             {value.title}
                           </Typography>
                         </Card>
-                      </Box>
+                      </Link>
                     </Grid>
                   ))}
               </Grid>

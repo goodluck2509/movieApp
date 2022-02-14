@@ -47,7 +47,7 @@ export default function Footer() {
     <Grid container className={classes.root}>
       <Grid item xs={12} className={classes.footer}>
         <Grid item xs={6}>
-          <Box pt={1} pb={1}>
+          <Box my={5}>
             <Typography variant="h5" paragraph className={classes.fullName}>
               <b>
                 bom<span className={classes.name}>vang</span>
@@ -70,7 +70,7 @@ export default function Footer() {
           </Box>
         </Grid>
         <Grid item xs={6}>
-          <Box pt={1} pb={1}>
+          <Box my={5}>
             <List>
               <ListItem>
                 {[1, 2, 3, 4].map(() => (
@@ -103,9 +103,11 @@ export default function Footer() {
         </Grid>
       </Grid>
       <Grid item xs={12} className={classes.reserved}>
-        <Typography color="initial" variant="body2">
-          Copyright ©2022 BomVangTV. All Rights Reserved
-        </Typography>
+        <Box my={2}>
+          <Typography color="initial" variant="body2">
+            Copyright ©2022 BomVangTV. All Rights Reserved
+          </Typography>
+        </Box>
       </Grid>
     </Grid>
   );
