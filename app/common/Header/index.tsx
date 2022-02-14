@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link } from "remix";
 import clsx from "clsx";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -16,6 +16,10 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     backgroundColor: "#1e2129",
+  },
+  linkHome: {
+    color: "#fff",
+    textDecoration: "none",
   },
   appBar: {
     backgroundColor: "#1e2129",
@@ -110,9 +114,11 @@ export default function HomePage() {
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
-          <Typography className={classes.title} variant="h6" noWrap>
-            bom<span className={classes.nameYellow}>vang</span>.tv
-          </Typography>
+          <Link to="/" className={classes.linkHome}>
+            <Typography className={classes.title} variant="h6" noWrap>
+              bom<span className={classes.nameYellow}>vang</span>.tv
+            </Typography>
+          </Link>
           <Grid className={classes.menuList}>
             <Box display="flex">
               <Box mr={2}>
