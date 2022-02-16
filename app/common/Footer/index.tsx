@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import Link from "@material-ui/core/Link";
+import { Link } from "remix";
 import { Button, Grid, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -34,6 +34,7 @@ const useStyles = makeStyles({
   },
   link: {
     textDecoration: "none",
+    color: "#a1a1a1",
   },
   reserved: {
     backgroundColor: "#0d0e11",
@@ -66,7 +67,16 @@ export default function Footer() {
               sharing website, and provided by 3rd parties not affiliated with
               this site or it's server.
             </Typography>
-            <Typography color="primary">xem phim, xem phim lẻ</Typography>
+            <Box display="flex">
+              <Box mr={1}>
+                <Link to="/" className={classes.link}>
+                  <Typography color="primary">xem phim</Typography>
+                </Link>
+              </Box>
+              <Link to="/" className={classes.link}>
+                <Typography color="primary">xem phim lẻ</Typography>
+              </Link>
+            </Box>
           </Box>
         </Grid>
         <Grid item xs={6}>
@@ -76,22 +86,22 @@ export default function Footer() {
                 {[1, 2, 3, 4].map(() => (
                   <List>
                     <ListItem className={classes.sectionFooter}>
-                      <Link className={classes.link} color="initial">
+                      <Link to="/" className={classes.link}>
                         PhimNhanh
                       </Link>
                     </ListItem>
                     <ListItem className={classes.sectionFooter}>
-                      <Link className={classes.link} color="initial">
-                        PhimNhanhABC
-                      </Link>
-                    </ListItem>
-                    <ListItem className={classes.sectionFooter}>
-                      <Link className={classes.link} color="initial">
+                      <Link to="/" className={classes.link}>
                         PhimNhanh
                       </Link>
                     </ListItem>
                     <ListItem className={classes.sectionFooter}>
-                      <Link className={classes.link} color="initial">
+                      <Link to="/" className={classes.link}>
+                        PhimNhanh
+                      </Link>
+                    </ListItem>
+                    <ListItem className={classes.sectionFooter}>
+                      <Link to="/" className={classes.link}>
                         PhimNhanhABC
                       </Link>
                     </ListItem>

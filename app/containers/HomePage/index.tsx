@@ -184,6 +184,12 @@ const useStyles = makeStyles((theme) => ({
     color: "black",
     fontSize: 40,
   },
+  sectionPath: {
+    background: "#272b34",
+    color: "#00acc1",
+    fontSize: 20,
+    padding: "16px",
+  },
 }));
 
 export default function HomePage() {
@@ -259,9 +265,14 @@ export default function HomePage() {
             </Typography>
           </Box>
         </Box>
-        <Typography variant="h5" paragraph className={classes.titleType}>
-          Trọn bộ
-        </Typography>
+        <Box mb={3}>
+          <Typography className={classes.sectionPath} variant="h4">
+            Home / Thể loại
+          </Typography>
+          <Typography variant="h5" paragraph className={classes.titleType}>
+            Trọn bộ
+          </Typography>
+        </Box>
         <Box>
           {listDataMovie.map((item: any, index: any) => {
             const listMovie = item.recommendContentVOList;
@@ -270,10 +281,7 @@ export default function HomePage() {
                 {listMovie &&
                   listMovie.map((value: any, index2: any) => (
                     <Grid item xs={2} key={(() => `${index2}`)()}>
-                      <Link
-                        // to={`/${value.id}`}
-                        to="/detailPage"
-                      >
+                      <Link to={`/detailPage?${value.id}`}>
                         <Card className={classes.cardItem}>
                           <CardMedia
                             className={classes.media}
