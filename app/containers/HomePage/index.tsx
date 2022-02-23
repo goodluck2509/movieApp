@@ -7,15 +7,16 @@ import MobileStepper from "@material-ui/core/MobileStepper";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { Link } from "remix";
-// import "slick-carousel/slick/slick-theme.css";
-// import "slick-carousel/slick/slick.css";
+import { Link, LoaderFunction } from "remix";
+import { getFilms } from "~/api/movie";
 import RssFeedIcon from "@material-ui/icons/RssFeed";
 import _get from "lodash/get";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
 import { useLoaderData } from "remix";
+import { Pagination } from "@material-ui/lab";
+import ListMovie from "./ListMovie";
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const tutorialSteps = [
@@ -114,59 +115,7 @@ const useStyles = makeStyles((theme) => ({
   iconRssFeed: {
     fontSize: "75px",
   },
-  titleType: {
-    color: "#00acc1",
-  },
-  cardItem: {
-    flex: 1,
-    background: "black",
-    borderRadius: "5px",
-    //
-    overflow: "unset",
-    wordBreak: "break-word",
-    boxShadow: "none",
-    cursor: "pointer",
-    position: "relative",
-    transition: "all 0.2s ease-in-out",
-    "-o-transition": "all 0.2s ease-in-out",
-    "-moz-transition": "all 0.2s ease-in-out",
-    "-webkit-transition": "all 0.2s ease-in-out",
-    "&:hover": {
-      boxShadow: "0px 3px 20px 0px rgba(44, 101, 144, 0.3)",
-      "-webkit-transform": "translateY(-4px)",
-      "-moz-transform": "translateY(-4px)",
-      "-o-transform": "translateY(-4px)",
-      "-ms-transform": "translateY(-4px)",
-      transform: "translateY(-4px)",
-    },
-  },
-  hd: {
-    position: "absolute",
-    top: theme.spacing(2),
-    right: theme.spacing(2),
-    color: "white",
-    background: "red",
-    padding: "3px",
-    boxShadow: "6px 6px 0 0 #000000fa",
-    borderRadius: "2px",
-  },
-  textAbsolute: {
-    justifyContent: "center",
-    color: "yellow",
-    position: "absolute",
-    bottom: "12px",
-    fontSize: 13,
-    background: "#000000cf",
-    width: "100%",
-    height: 75,
-    display: "flex",
-    opacity: "85%",
-    textAlign: "center",
-    alignItems: "center",
-  },
-  media: {
-    height: 300,
-  },
+
   seeMore: {
     background: "#00acc1",
     marginTop: 20,
@@ -190,19 +139,42 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 20,
     padding: "16px",
   },
+  pagination: {
+    display: "flex",
+    justifyContent: "center",
+  },
 }));
 
 export default function HomePage() {
   const classes = useStyles();
   const theme = useTheme();
+  const [page, setPage] = React.useState(1);
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = tutorialSteps.length;
+
+  const handleChangePage = (event: any, value: any) => {
+    setPage(value);
+  };
 
   const handleStepChange = (step: any) => {
     setActiveStep(step);
   };
-  let getData = useLoaderData();
-  const listDataMovie = _get(getData, "data.recommendItems");
+
+  let listMovie = useLoaderData();
+
+  const title = listMovie?.title;
+
+  const newArrFilm = title ? listMovie?.newList : listMovie?.listData;
+
+  let newListFilm = [];
+  for (let i = 0; i < listMovie?.newArr?.length; i += 1) {
+    for (let j = 0; j < listMovie?.newArr[i]?.length; j += 1) {
+      newListFilm.push(listMovie?.newArr[i][j]);
+    }
+  }
+
+  const listSlide = listMovie?.listData[0];
+  console.log("🚀 ~ listMovie", listMovie);
 
   return (
     <Grid className={classes.rootHompage}>
@@ -260,57 +232,51 @@ export default function HomePage() {
               <b>BomVang TV</b>
             </Typography>
             <Typography component="p">
-              Nơi xem phim online miễn phí với hàng ngàn bộ phim hay được cập
+              Nơi xem phim online miễn phí với hàng nghìn bộ phim hay được cập
               nhật liên tục.
             </Typography>
           </Box>
         </Box>
         <Box mb={3}>
-          <Typography className={classes.sectionPath} variant="h4">
+          <Typography className={classes.sectionPath} variant="h4" paragraph>
             Home / Thể loại
-          </Typography>
-          <Typography variant="h5" paragraph className={classes.titleType}>
-            Trọn bộ
           </Typography>
         </Box>
         <Box>
-          {listDataMovie.map((item: any, index: any) => {
-            const listMovie = item.recommendContentVOList;
-            return (
-              <Grid container spacing={2} key={(() => `${index}`)()}>
-                {listMovie &&
-                  listMovie.map((value: any, index2: any) => (
-                    <Grid item xs={2} key={(() => `${index2}`)()}>
-                      <Link to={`/detailPage?${value.id}`}>
-                        <Card className={classes.cardItem}>
-                          <CardMedia
-                            className={classes.media}
-                            // image={`http://image.tmdb.org/t/p/w500/${value.poster_path}`}
-                            image={value.imageUrl}
-                            title="Paella dish"
-                          />
-                          <Typography variant="body2" className={classes.hd}>
-                            HD
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                            className={classes.textAbsolute}
-                          >
-                            {value.title}
-                          </Typography>
-                        </Card>
-                      </Link>
-                    </Grid>
-                  ))}
-              </Grid>
-            );
-          })}
-          <Box textAlign="center" my={3}>
-            <Button variant="contained" className={classes.seeMore}>
+          {title ? (
+            <ListMovie
+              movies={newListFilm}
+              newTitle={title}
+              title=""
+              homeSectionId={0}
+            />
+          ) : (
+            newArrFilm?.map((item: any, index: number) => (
+              <ListMovie
+                movies={item?.recommendContentVOList}
+                title={item?.homeSectionName}
+                newTitle={title}
+                key={Number(index)}
+                homeSectionId={item?.homeSectionId}
+              />
+            ))
+          )}
+          <Box textAlign="center" my={10}>
+            <Pagination
+              count={10}
+              variant="outlined"
+              color="secondary"
+              defaultPage={listMovie?.newPage + 1}
+              // count={getTotalPage(total, limit)}
+              onChange={handleChangePage}
+              size="medium"
+              shape="rounded"
+              // disabled={isLoading}
+              className={classes.pagination}
+            />
+            {/* <Button variant="contained" className={classes.seeMore}>
               Xem thêm
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Grid>

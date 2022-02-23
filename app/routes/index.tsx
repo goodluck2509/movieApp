@@ -1,31 +1,35 @@
-import PropTypes from "prop-types";
-import React from "react";
-import Home from "~/containers/Home";
+import { LoaderFunction, redirect } from "remix";
 
-export let loader = async () => {
-  let res = await fetch(
-    "https://ga-mobile-api.loklok.tv/cms/app/homePage/getHome?page=0",
-    {
-      method: "GET",
-      headers: {
-        lang: "en",
-        versioncode: "11",
-        clienttype: "ios_jike_default",
-      },
-    }
-  );
-  return res.json();
+export const loader: LoaderFunction = async () => {
+  return redirect("/movie");
 };
-// export let loader = async () => {
-//   let res = await fetch(
-//     "https://ga-mobile-api.loklok.tv/cms/app/search/v1/searchLeaderboard",
-//     {
-//       method: "GET",
-//       headers: { lang: "en", versioncode: 11, clienttype: "ios_jike_default" },
-//     }
-//   );
-//   return res.json();
+
+// import PropTypes from "prop-types";
+// import React from "react";
+// import { LoaderFunction, useLoaderData, useParams } from "remix";
+// import Home from "~/containers/Home";
+// import api, { getFilms } from "../api/movie";
+
+// // export let loader = ({ request, params }) => {
+// //   console.log("🚀 ~ loader ~ params", params);
+// //   console.log("🚀 ~ loader ~ request", request);
+
+// //   let a = api();
+// //   return a;
+// // };
+
+// export const loader: LoaderFunction = async ({ request }) => {
+//   const url = new URL(request.url);
+//   const title = url.searchParams.get("title");
+//   const page = url.searchParams.get("page");
+
+//   return await getFilms(title, page);
 // };
-export default function Film() {
-  return <Home />;
-}
+
+// export default function Film() {
+//   const data = useLoaderData();
+//   const param = useParams();
+//   console.log("🚀 ~ Film ~ param", param);
+//   console.log("🚀 ~ Film ~ data", data);
+//   return <Home />;
+// }
