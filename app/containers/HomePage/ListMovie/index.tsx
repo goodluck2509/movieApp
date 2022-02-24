@@ -1,4 +1,4 @@
-import { Box, Card } from "@material-ui/core";
+import { Box, Button, Card } from "@material-ui/core";
 import CardMedia from "@material-ui/core/CardMedia";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles";
@@ -93,7 +93,6 @@ export default function ListMovie({
                 <CardMedia
                   className={classes.media}
                   image={item.imageUrl}
-                  // title="Paella dish"
                   title={title}
                 />
                 <Typography variant="body2" className={classes.hd}>

@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import MenuIcon from "@material-ui/icons/Menu";
 import SearchIcon from "@material-ui/icons/Search";
 import React from "react";
-import { Link } from "remix";
+import { Link, Form } from "remix";
 import clsx from "clsx";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
@@ -191,11 +191,11 @@ export default function HomePage() {
               ))}
             </Box>
           </Grid>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
+          <Form reloadDocument action="" className="form-search">
+            <div className={classes.searchIcon} />
             <InputBase
+              type="text"
+              name="title"
               placeholder="Tìm kiếm…"
               classes={{
                 root: classes.inputRoot,
@@ -203,7 +203,29 @@ export default function HomePage() {
               }}
               inputProps={{ "aria-label": "search" }}
             />
-          </div>
+            <button className="btn-search" type="submit">
+              <SearchIcon />
+            </button>
+          </Form>
+          <Form reloadDocument action="" className="form-search">
+            <div className={classes.search}>
+              <div className={classes.searchIcon}>
+                <Button>
+                  <SearchIcon />
+                </Button>
+              </div>
+              <InputBase
+                type="text"
+                name="title"
+                placeholder="Tìm kiếm…"
+                classes={{
+                  root: classes.inputRoot,
+                  input: classes.inputInput,
+                }}
+                inputProps={{ "aria-label": "search" }}
+              />
+            </div>
+          </Form>
         </Toolbar>
       </AppBar>
     </div>
