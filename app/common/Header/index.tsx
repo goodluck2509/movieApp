@@ -1,31 +1,32 @@
+import { Grid, List, ListItem, ListItemText } from "@material-ui/core";
 import AppBar from "@material-ui/core/AppBar";
-import IconButton from "@material-ui/core/IconButton";
-import InputBase from "@material-ui/core/InputBase";
-import { alpha, makeStyles } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import MenuIcon from "@material-ui/icons/Menu";
-import SearchIcon from "@material-ui/icons/Search";
-import React from "react";
-import { Link, Form } from "remix";
-import clsx from "clsx";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+import Toolbar from "@material-ui/core/Toolbar";
 import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import React from "react";
+import { Link, useLoaderData } from "remix";
+import { ItemListTitle } from "~/api/movie";
+import FormSearch from "~/common/FormSearch";
 
-import {
-  Grid,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core";
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: any) => ({
   root: {
     flexGrow: 1,
     backgroundColor: "#1e2129",
   },
-  linkHome: {
+  titlPage: {
+    textDecoration: "none",
+    border: 0,
+    background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
+    boxShadow: "0 3px 5px 2px rgba(255, 105, 135, .3)",
+    color: "white",
+    height: 64,
+    padding: "0 30px",
+    alignItems: "center",
+  },
+  link: {
     color: "#fff",
     textDecoration: "none",
   },
@@ -35,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
     top: 0,
   },
   title: {
+    marginTop: 12,
     display: "none",
     [theme.breakpoints.up("sm")]: {
       display: "block",
@@ -47,45 +49,6 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: "1240px",
     margin: "auto",
     color: "white",
-  },
-  search: {
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      marginLeft: theme.spacing(1),
-      width: "auto",
-    },
-  },
-  searchIcon: {
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(8)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    // [theme.breakpoints.up("sm")]: {
-    //   width: "12ch",
-    //   "&:focus": {
-    //     width: "20ch",
-    //   },
-    // },
   },
   mainHeader: {
     background: "black",
@@ -115,68 +78,121 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
   },
 }));
+
 export default function HomePage() {
   const classes = useStyles();
+
+  let listMovie = useLoaderData();
+
+  const title = listMovie?.title;
+
+  const newArrFilm = title ? listMovie?.newList : listMovie?.listData;
+
+  let newListFilm = [];
+  for (let i = 0; i < listMovie?.newArr?.length; i += 1) {
+    for (let j = 0; j < listMovie?.newArr[i]?.length; j += 1) {
+      newListFilm.push(listMovie?.newArr[i][j]);
+    }
+  }
   const dataMenu = [
     {
-      label: "XEM PHIM",
-      value: "",
-      totalName: "",
-    },
-    {
       label: "THỂ LOẠI",
-      value: "",
-      totalName: ["Phim kiếm hiệp", "Phim viễn tưởng"],
+      value: 1,
+      totalName: "type",
     },
     {
       label: "QUỐC GIA",
-      value: "",
-      totalName: ["Mỹ", "Nhật"],
+      value: 2,
+      totalName: ["Mỹ", "Nhật Bản", "Hàn Quốc", "Ấn Độ", "Trung Quốc"],
     },
     {
       label: "PHIM LẺ",
-      value: "",
-      totalName: ["Năm 2021", "Năm 2022"],
+      value: 3,
+      totalName: ["Năm 2022", "Năm 2021", "Năm 2020", "Năm 2019", "Năm 2018"],
     },
     {
       label: "PHIM BỘ",
-      value: "",
-      totalName: ["Phim kiếm hiệp", "Phim võ thuật"],
-    },
-    {
-      label: "TOP IMDb",
-      value: "",
-      totalName: "",
-    },
-    {
-      label: "BOOKMARK",
-      value: "",
-      totalName: "",
+      value: 4,
+      totalName: [
+        "Phim kiếm hiệp",
+        "Phim võ thuật",
+        "Phim viễn tưởng",
+        "Phim tâm lý",
+        "Phim gia đình",
+      ],
     },
   ];
   return (
     <div className={classes.root}>
       <AppBar position="static" className={classes.appBar}>
         <Toolbar>
-          <Link to="/" className={classes.linkHome}>
+          <Link to="/" className={classes.titlPage}>
             <Typography className={classes.title} variant="h6" noWrap>
-              bom<span className={classes.nameYellow}>vang</span>.tv
+              Bom<span className={classes.nameYellow}>Vang</span>.TV
             </Typography>
           </Link>
           <Grid className={classes.menuList}>
             <Box display="flex">
+              <Button>
+                <Typography variant="body1" className={classes.labelMenu}>
+                  XEM PHIM
+                </Typography>
+              </Button>
               {dataMenu.map((item: any) => (
                 <Box mr={2}>
                   <Tooltip
                     title={
-                      item.totalName && (
+                      item.value === 1 ? (
                         <List component="nav" aria-label="contacts">
-                          {item.totalName.map((name: any) => (
-                            <ListItem button>
-                              <ListItemText primary={name} />
-                            </ListItem>
-                          ))}
+                          {!title &&
+                            newArrFilm?.map(
+                              (name: ItemListTitle, index: number) => {
+                                console.log(
+                                  "🚀 ~ HomePage ~ name",
+                                  name?.homeSectionId
+                                );
+
+                                return (
+                                  <>
+                                    {name?.homeSectionName && (
+                                      <Link
+                                        to={`#movie-${name?.homeSectionId}`}
+                                        className={classes.link}
+                                      >
+                                        <ListItem key={index} button>
+                                          <ListItemText
+                                            primary={
+                                              name?.homeSectionName?.includes(
+                                                "Loklok"
+                                              )
+                                                ? "Phim tuyển chọn của REMIX"
+                                                : name?.homeSectionName?.includes(
+                                                    "kinh"
+                                                  )
+                                                ? "Phim kinh dị"
+                                                : name?.homeSectionName
+                                            }
+                                          />
+                                        </ListItem>
+                                      </Link>
+                                    )}
+                                  </>
+                                );
+                              }
+                            )}
                         </List>
+                      ) : (
+                        <>
+                          {item.totalName && (
+                            <List component="nav" aria-label="contacts">
+                              {item.totalName.map((name: any) => (
+                                <ListItem button>
+                                  <ListItemText primary={name} />
+                                </ListItem>
+                              ))}
+                            </List>
+                          )}
+                        </>
                       )
                     }
                     interactive
@@ -189,43 +205,19 @@ export default function HomePage() {
                   </Tooltip>
                 </Box>
               ))}
+              <Button>
+                <Typography variant="body1" className={classes.labelMenu}>
+                  TOP IMDb
+                </Typography>
+              </Button>
+              <Button>
+                <Typography variant="body1" className={classes.labelMenu}>
+                  BOOKMARK
+                </Typography>
+              </Button>
             </Box>
           </Grid>
-          <Form reloadDocument action="" className="form-search">
-            <div className={classes.searchIcon} />
-            <InputBase
-              type="text"
-              name="title"
-              placeholder="Tìm kiếm…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-            />
-            <button className="btn-search" type="submit">
-              <SearchIcon />
-            </button>
-          </Form>
-          <Form reloadDocument action="" className="form-search">
-            <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <Button>
-                  <SearchIcon />
-                </Button>
-              </div>
-              <InputBase
-                type="text"
-                name="title"
-                placeholder="Tìm kiếm…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ "aria-label": "search" }}
-              />
-            </div>
-          </Form>
+          <FormSearch />
         </Toolbar>
       </AppBar>
     </div>

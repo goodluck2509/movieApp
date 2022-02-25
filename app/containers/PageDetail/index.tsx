@@ -1,17 +1,23 @@
-import { Card, Divider, Typography } from "@material-ui/core";
+import { Button, Card, Divider, Typography } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import CardMedia from "@material-ui/core/CardMedia";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import Grid from "@material-ui/core/Grid";
+import LinkHre from "@material-ui/core/Link";
 import { makeStyles } from "@material-ui/core/styles";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import ImportContactsIcon from "@material-ui/icons/ImportContacts";
+import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import PublicIcon from "@material-ui/icons/Public";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import Rating from "@material-ui/lab/Rating";
 import React from "react";
 import { Link, useLoaderData } from "remix";
 import { MovieItemDetail } from "~/api/movie";
-
 const useStyles = makeStyles({
   root: {
     marginTop: "64px",
@@ -129,6 +135,19 @@ const useStyles = makeStyles({
   media: {
     height: 200,
   },
+  video: {
+    width: "100%",
+    height: "500px",
+    maxWidth: "1280px",
+    backgroundColor: "#424040",
+    margin: "auto",
+    position: "relative",
+  },
+  btnPlay: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+  },
 });
 export default function index() {
   const classes = useStyles();
@@ -179,7 +198,15 @@ export default function index() {
   ];
   const filmData = useLoaderData();
   const film = filmData?.films;
+  const [open, setOpen] = React.useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Grid className={classes.root}>
       {/* <Box className={classes.sectionPath}>{`Home / ${getMovie.title}`}</Box> */}
@@ -241,6 +268,58 @@ export default function index() {
         </Box>
       </Box>
       <Grid container spacing={5} className={classes.sessionActors}>
+        <Grid
+          item
+          xs={12}
+          className={classes.video}
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Button
+            variant="contained"
+            className={classes.btnPlay}
+            onClick={handleClickOpen}
+          >
+            <PlayArrowIcon />
+          </Button>
+          <Dialog
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title">
+              <b>Thông báo</b>
+            </DialogTitle>
+            <DialogContent dividers>
+              <DialogContentText id="alert-dialog-description">
+                <b>
+                  Trang web hiện chưa thể xem. Bạn có muốn chuyển sang netflix
+                  không?
+                </b>
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button variant="outlined" onClick={handleClose} color="primary">
+                Bỏ
+              </Button>
+              <Button
+                variant="outlined"
+                onClick={handleClose}
+                color="primary"
+                autoFocus
+              >
+                <LinkHre
+                  href="https://www.netflix.com/"
+                  target="_blank"
+                  style={{ textDecoration: "none" }}
+                >
+                  Đồng ý
+                </LinkHre>
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </Grid>
         <Grid item xs={12}>
           <Typography variant="h6" color="primary" paragraph>
             Các diễn viên tham gia trong phim

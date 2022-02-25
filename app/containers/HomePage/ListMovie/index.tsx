@@ -65,51 +65,57 @@ const useStyles = makeStyles((theme) => ({
 export default function ListMovie({
   title = "",
   movies = [],
-  // homeSectionId = 0,
+  homeSectionId = 0,
   newTitle = "",
 }: PropMovieItem) {
   const classes = useStyles();
 
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12}>
-        {!newTitle && (
-          <Box mt={4} mb={2}>
-            <Typography variant="h5" className={classes.titleType}>
-              {title?.includes("Loklok")
-                ? "Phim tuyển chọn của REMIX"
-                : title?.includes("kinh")
-                ? "Phim kinh dị"
-                : title}
-            </Typography>
-          </Box>
-        )}
+    <>
+      <div
+        id={`movie-${homeSectionId ? homeSectionId : "0"}`}
+        style={{ marginBottom: "30px" }}
+      />
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          {!newTitle && (
+            <Box mt={4} mb={2}>
+              <Typography variant="h5" className={classes.titleType}>
+                {title?.includes("Loklok")
+                  ? "Phim tuyển chọn của REMIX"
+                  : title?.includes("kinh")
+                  ? "Phim kinh dị"
+                  : title}
+              </Typography>
+            </Box>
+          )}
+        </Grid>
+        {movies &&
+          movies?.map((item: MovieItem, index: number) => (
+            <Grid item xs={2} key={(() => `${index}`)()}>
+              <Link to={`/movie/detail/${item.id}?cate=${item.category}`}>
+                <Card className={classes.cardItem}>
+                  <CardMedia
+                    className={classes.media}
+                    image={item.imageUrl}
+                    title={title}
+                  />
+                  <Typography variant="body2" className={classes.hd}>
+                    HD
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="textSecondary"
+                    component="p"
+                    className={classes.textAbsolute}
+                  >
+                    {item.title}
+                  </Typography>
+                </Card>
+              </Link>
+            </Grid>
+          ))}
       </Grid>
-      {movies &&
-        movies?.map((item: MovieItem, index: number) => (
-          <Grid item xs={2} key={(() => `${index}`)()}>
-            <Link to={`/movie/detail/${item.id}?cate=${item.category}`}>
-              <Card className={classes.cardItem}>
-                <CardMedia
-                  className={classes.media}
-                  image={item.imageUrl}
-                  title={title}
-                />
-                <Typography variant="body2" className={classes.hd}>
-                  HD
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  component="p"
-                  className={classes.textAbsolute}
-                >
-                  {item.title}
-                </Typography>
-              </Card>
-            </Link>
-          </Grid>
-        ))}
-    </Grid>
+    </>
   );
 }
